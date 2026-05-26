@@ -32,4 +32,12 @@ class BattleRow {
     get naquadah() { return getNumsFromImg(this.cells[4]); }
 
     get attackButton() { return this.cells[0].querySelector('input[name^="attackbut"]')?.name; }
+
+get attackButton() {
+    const forms = this.cells[0].getElementsByTagName("form");
+
+    return forms.length > 1
+        ? forms[1].getElementsByTagName("input")[3]?.name
+        : null;
+}
 }
