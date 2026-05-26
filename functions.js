@@ -209,3 +209,5 @@ async function ignoreIds(playerId) {
     const list = await GM.getValue("ignoreId");
     return (list ? list.split(',') : []).includes(String(playerId)) ? 1 : 0;
 }
+
+function randomNum(min, max) {return Math.floor(Math.random() * (max - min) + min);}
