@@ -1,0 +1,35 @@
+class BattleRow {
+    constructor(anchor) {
+        this.anchor = anchor;
+        this.row = anchor.closest('table').closest('td').closest('tr');
+        this.cells = this.row.children;
+    }
+
+    static findAll() { return [...document.querySelectorAll('a[href*="stats.php?id="]')].map(anchor => new BattleRow(anchor)); }
+
+    static get totalRows() { return document.querySelectorAll('a[href*="stats.php?id="]').length; }
+
+    static get pageRow() { return [...document.querySelectorAll('tr')].at(-2);}
+
+    static get currentPage() {return parseInt(this.pageRow.textContent.match(/page\s+(\d+)/i)[1]);}
+
+    static get totalPages() { return parseInt(this.pageRow.textContent.match(/of\s+(\d+)/i)[1]);}
+
+    static get nextPageLink() { return this.pageRow.querySelector('a[href*="page="]')?.href;}
+
+    static get hasNextPage() { return !!this.nextPageLink; }
+
+    get username() { return this.anchor.textContent.trim(); }
+
+    get id() { return this.anchor.href.match(/\d+/)[0]; }
+
+    get rank() { return this.cells[1].textContent.trim(); }
+
+    get population() { return this.cells[2].getElementsByTagName("img").length > 0 ? getUuFromImg(this.cells[2]) : this.cells[2].innerHTML.replace(/\D/g, "");}
+
+    get race() { return this.cells[3].textContent.trim(); }
+
+    get naquadah() { return getNumsFromImg(this.cells[4]); }
+
+    get attackButton() { return this.cells[0].querySelector('input[name^="attackbut"]')?.name; }
+}
